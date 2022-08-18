@@ -1,33 +1,30 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "bootstrap";
 
 // import pages
 import Home from "./pages/Home";
 import Detail from "./pages/Detail";
+import NoMatch from "./pages/NoMatch";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 // import components
-// import AddProduct from "./components/addProduct";
-// import UpdateProduct from "./components/updateProduct";
-// import ViewProducts from "./components/viewProducts";
-// import RemoveProduct from "./components/removeProduct";
+import Nav from "./components/navbar";
 
 function App() {
-	<Router>
-		<Routes>
-			<nav className="navbar navbar-expand navbar-dark bg-secondary">
-				<Link
-					to={"/products"}
-					className="navbar-brand"
-					style={{ paddingLeft: "5%" }}
-				>
-					Products
-				</Link>
-			</nav>
-			<Route path="/" element={<Home />} />
-			<Route path="/products/:id" element={<Detail />} />
-		</Routes>
-	</Router>;
+	return (
+		<Router>
+			<Nav />
+			<Routes>
+				<Route path="/" element={<Home />} />
+				<Route path="/login" element={<Login />} />
+				<Route path="/signup" element={<Signup />} />
+				<Route path="/products/:id" element={<Detail />} />
+				<Route element={<NoMatch />} />
+			</Routes>
+		</Router>
+	);
 }
 
 export default App;

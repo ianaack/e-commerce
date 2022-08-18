@@ -1,7 +1,16 @@
 import React from "react";
 
+// import components
+import ViewProducts from "../components/viewProducts";
+import AddProduct from "../components/addProduct";
+
 const Home = () => {
-	return <h1>Hello World!</h1>;
+	return (
+		<div className="container">
+			<ViewProducts />
+			<AddProduct />
+		</div>
+	);
 };
 
 export default Home;
