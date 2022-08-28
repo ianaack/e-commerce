@@ -11,6 +11,7 @@ import Signup from "./pages/Signup";
 
 // import components
 import Nav from "./components/Navbar";
+import AddProducts from "./components/AddProduct";
 
 function App() {
 	return (
@@ -21,6 +22,7 @@ function App() {
 				<Route path="/login" element={<Login />} />
 				<Route path="/signup" element={<Signup />} />
 				<Route path="/products/:id" element={<Detail />} />
+				<Route path="/add" element={<AddProducts />} />
 				<Route element={<NoMatch />} />
 			</Routes>
 		</Router>
