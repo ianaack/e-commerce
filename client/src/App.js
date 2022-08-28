@@ -10,14 +10,14 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
 // import components
-import Nav from "./components/navbar";
+import Nav from "./components/Navbar";
 
 function App() {
 	return (
 		<Router>
 			<Nav />
 			<Routes>
-				<Route path={["/", "/products"]} element={<Home />} />
+				<Route path={"/"} element={<Home />} />
 				<Route path="/login" element={<Login />} />
 				<Route path="/signup" element={<Signup />} />
 				<Route path="/products/:id" element={<Detail />} />
