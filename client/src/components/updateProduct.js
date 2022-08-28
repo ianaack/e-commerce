@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -6,6 +7,7 @@ function UpdateProducts() {
 	const [name, setName] = useState("");
 	const [price, setPrice] = useState("");
 	const [stock, setStock] = useState("");
+	const [category, setCategory] = useState([""]);
 	const { id } = useParams();
 
 	const updateProduct = async (e) => {
@@ -14,12 +16,13 @@ function UpdateProducts() {
 			product_name: name,
 			price: price,
 			stock: stock,
+			category: category,
 		});
 	};
 
 	useEffect(() => {
 		getProductById();
-	});
+	}, []);
 
 	const getProductById = async () => {
 		const response = await axios.get(
@@ -28,10 +31,11 @@ function UpdateProducts() {
 		setName(response.data.product_name);
 		setPrice(response.data.price);
 		setStock(response.data.stock);
+		setCategory(response.data.category.category_name);
 	};
 
 	return (
-		<div>
+		<div className="container">
 			<form onSubmit={updateProduct}>
 				<div className="form-group m-2">
 					<label className="">Product Name</label>
@@ -40,8 +44,8 @@ function UpdateProducts() {
 						className="form-control"
 						placeholder="Name"
 						value={name}
-						onChange={(e) => setName(e.target.value)}
 						onClick={() => setName("")}
+						onChange={(e) => setName(e.target.value)}
 					/>
 				</div>
 				<div className="form-group m-2">
@@ -61,6 +65,16 @@ function UpdateProducts() {
 						value={stock}
 						onChange={(e) => setStock(e.target.value)}
 					/>
+				</div>
+				<div className="form-group m-2">
+					<label className="">Category</label>
+					<select
+						className="form-select"
+						onChange={(e) => setCategory(e.target.value)}
+					>
+						<option defaultValue={""}>Open this select menu</option>
+						{/* TODO: Map over options here */}
+					</select>
 				</div>
 
 				<button className="btn btn-outline-success m-2">Update Product</button>

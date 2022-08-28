@@ -5,7 +5,7 @@ function AddProducts() {
 	const [name, setName] = useState("");
 	const [price, setPrice] = useState("");
 	const [stock, setStock] = useState("");
-	const [category, setCategory] = useState("");
+	const [category, setCategory] = useState([""]);
 
 	const saveProduct = async (e) => {
 		e.preventDefault();
@@ -49,13 +49,14 @@ function AddProducts() {
 					/>
 				</div>
 				<div className="form-group m-2">
-					<label className="">Category ID Number</label>
-					<input
-						type={"number"}
-						className="form-control"
-						value={category}
+					<label className="">Category</label>
+					<select
+						className="form-select"
 						onChange={(e) => setCategory(e.target.value)}
-					/>
+					>
+						<option defaultValue={""}>Open this select menu</option>
+						{/* TODO: Map over options here */}
+					</select>
 				</div>
 
 				<button className="btn btn-outline-success m-2">Add Product</button>
