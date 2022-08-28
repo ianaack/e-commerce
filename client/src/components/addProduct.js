@@ -15,8 +15,6 @@ function AddProducts() {
 			stock: stock,
 			category_id: category,
 		});
-
-		window.location.replace("/");
 	};
 
 	return (

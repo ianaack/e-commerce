@@ -12,6 +12,7 @@ import Signup from "./pages/Signup";
 // import components
 import Nav from "./components/Navbar";
 import AddProducts from "./components/AddProduct";
+import UpdateProducts from "./components/UpdateProduct";
 
 function App() {
 	return (
@@ -23,6 +24,7 @@ function App() {
 				<Route path="/signup" element={<Signup />} />
 				<Route path="/products/:id" element={<Detail />} />
 				<Route path="/add" element={<AddProducts />} />
+				<Route path="/edit/:id" element={<UpdateProducts />} />
 				<Route element={<NoMatch />} />
 			</Routes>
 		</Router>
