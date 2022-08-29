@@ -1,20 +1,14 @@
 const router = require("express").Router();
-const { Product, Category } = require("../../models");
+const { User } = require("../../models");
 
-// The `/api/products` endpoint
+// The `/api/users` endpoint
 
-// find all products
+// find all users
 router.get("/", (req, res) => {
-	Product.findAll({
-		attributes: ["id", "product_name", "price", "stock", "category_id"],
-		include: [
-			{
-				model: Category,
-				attributes: ["id", "category_name"],
-			},
-		],
+	User.findAll({
+		attributes: { exclude: ["password"] },
 	})
-		.then((dbProductData) => res.json(dbProductData))
+		.then((dbUserData) => res.json(dbUserData))
 		.catch((error) => {
 			if (error.response) {
 				// The request was made and the server responded with a status code
@@ -35,25 +29,20 @@ router.get("/", (req, res) => {
 		});
 });
 
-// find a single product by its `id`
+// find a single user by its `id`
 router.get("/:id", (req, res) => {
-	Product.findOne({
+	User.findOne({
+		attributes: { exclude: ["password"] },
 		where: {
 			id: req.params.id,
 		},
-		include: [
-			{
-				model: Category,
-				attributes: ["category_name"],
-			},
-		],
 	})
-		.then((dbProductData) => {
-			if (!dbProductData) {
-				res.status(404).json({ message: "No Product found with this id." });
+		.then((dbUserData) => {
+			if (!dbUserData) {
+				res.status(404).json({ message: "No user found with this id." });
 				return;
 			}
-			res.json(dbProductData);
+			res.json(dbUserData);
 		})
 		.catch((error) => {
 			if (error.response) {
@@ -75,20 +64,15 @@ router.get("/:id", (req, res) => {
 		});
 });
 
-// create new product
+// create a user
 router.post("/", (req, res) => {
-	/* req.body should look like this...
-    {
-      product_name: "Basketball",
-      price: 200.00,
-      stock: 3,
-      category: "Shirts"
-    }
-  */
-	Product.create(req.body, { Product })
-		.then((product) => {
-			res.status(200).json(product);
-      window.location.replace("/products");
+	User.create(req.body, { User })
+		.then((dbUserData) => {
+			req.session.user_id = dbUserData.id;
+			req.session.email = dbUserData.email;
+			req.session.loggedIn = true;
+
+			res.status(200).json(dbUserData);
 		})
 		.catch((error) => {
 			if (error.response) {
@@ -110,51 +94,96 @@ router.post("/", (req, res) => {
 		});
 });
 
-// update product
+router.post("/login", (req, res) => {
+	// expects {email: 'test@gmail.com', password: 'password1234'}
+	User.findOne({
+		where: {
+			email: req.body.email,
+		},
+	}).then((dbUserData) => {
+		if (!dbUserData) {
+			res.status(400).json({ message: "No user with that email address!" });
+			return;
+		}
+
+		const validPassword = dbUserData.checkPassword(req.body.password);
+
+		if (!validPassword) {
+			res.status(400).json({ message: "Incorrect password!" });
+			return;
+		}
+
+		req.session.save(() => {
+			req.session.user_id = dbUserData.id;
+			req.session.email = dbUserData.email;
+			req.session.loggedIn = true;
+
+			res.json({ user: dbUserData, message: "You are now logged in!" });
+		});
+	});
+});
+
+router.post("/logout", (req, res) => {
+	if (req.session.loggedIn) {
+		req.session.destroy(() => {
+			res.status(204).end();
+		});
+	} else {
+		res.status(404).end();
+	}
+});
+
+// update a user
 router.put("/:id", (req, res) => {
-	// update product data
-	Product.update(req.body, {
-		where: {
-			id: req.params.id,
-		},
-	})
-		.then((product) => {
-			res.status(200).json(product);
-			window.location.replace("/products");
-		})
-		.catch((error) => {
-			if (error.response) {
-				// The request was made and the server responded with a status code
-				// that falls out of the range of 2xx
-				console.log(error.response.data);
-				console.log(error.response.status);
-				console.log(error.response.headers);
-			} else if (error.request) {
-				// The request was made but no response was received
-				// `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-				// http.ClientRequest in node.js
-				console.log(error.request);
-			} else {
-				// Something happened in setting up the request that triggered an Error
-				console.log("Error", error.message);
-			}
-			console.log(error.config);
-		});
-});
+	// expects {email: "test@gmail.com", password: "password1234"}
 
-// delete one product by its `id` value
-router.delete("/:id", (req, res) => {
-	Product.destroy({
+	// pass in req.body instead to only update what's passed through
+	User.update(req.body, {
+		individualHooks: true,
 		where: {
 			id: req.params.id,
 		},
 	})
-		.then((dbProductData) => {
-			if (!dbProductData) {
-				res.status(404).json({ message: "No Product found with this id" });
+		.then((dbUserData) => {
+			if (!dbUserData) {
+				res.status(404).json({ message: "No user found with this id" });
 				return;
 			}
-			res.json(dbProductData, { message: "Product Deleted" });
+			res.json(dbUserData);
+		})
+		.catch((error) => {
+			if (error.response) {
+				// The request was made and the server responded with a status code
+				// that falls out of the range of 2xx
+				console.log(error.response.data);
+				console.log(error.response.status);
+				console.log(error.response.headers);
+			} else if (error.request) {
+				// The request was made but no response was received
+				// `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+				// http.ClientRequest in node.js
+				console.log(error.request);
+			} else {
+				// Something happened in setting up the request that triggered an Error
+				console.log("Error", error.message);
+			}
+			console.log(error.config);
+		});
+});
+
+// delete a user
+router.delete("/:id", (req, res) => {
+	User.destroy({
+		where: {
+			id: req.params.id,
+		},
+	})
+		.then((dbUserData) => {
+			if (!dbUserData) {
+				res.status(404).json({ message: "No user found with this id" });
+				return;
+			}
+			res.json(dbUserData);
 		})
 		.catch((error) => {
 			if (error.response) {

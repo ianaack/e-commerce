@@ -75,7 +75,9 @@ function AddProducts() {
 					</select>
 				</div>
 
-				<button className="btn btn-outline-success m-2">Add Product</button>
+				<button className="btn btn-outline-success m-2">
+					Add Product
+				</button>
 			</form>
 		</div>
 	);
