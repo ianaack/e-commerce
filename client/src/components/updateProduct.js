@@ -25,9 +25,7 @@ function UpdateProducts() {
 	}, []);
 
 	const getProductById = async () => {
-		const response = await axios.get(
-			`/api/products/${id}`
-		);
+		const response = await axios.get(`/api/products/${id}`);
 		setName(response.data.product_name);
 		setPrice(response.data.price);
 		setStock(response.data.stock);
