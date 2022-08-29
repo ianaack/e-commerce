@@ -24,7 +24,7 @@ function Signup() {
 					<label className="">Email</label>
 					<input
 						required
-						type={"text"}
+						type={"email"}
 						className="form-control"
 						placeholder="email@example.com"
 						value={email}
@@ -35,7 +35,7 @@ function Signup() {
 					<label className="">Password</label>
 					<input
 						required
-						type={"text"}
+						type={"password"}
 						className="form-control"
 						placeholder="**********"
 						value={password}

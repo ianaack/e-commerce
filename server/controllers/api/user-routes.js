@@ -118,7 +118,9 @@ router.post("/login", (req, res) => {
 			req.session.email = dbUserData.email;
 			req.session.loggedIn = true;
 
-			res.json({ user: dbUserData, message: "You are now logged in!" });
+			res
+				.status(200)
+				.json({ dbUserData, message: "You are now logged in!" });
 		});
 	});
 });
