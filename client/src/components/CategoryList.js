@@ -21,6 +21,9 @@ const ViewCategories = () => {
 
 	return (
 		<div className="container my-2">
+      <Link to="/add/category" className="btn btn-outline-dark mx-3">
+				Add New Category
+			</Link>
 			<table className="table table-striped">
 				<thead className="thead-dark">
 					<tr>

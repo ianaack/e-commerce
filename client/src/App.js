@@ -15,6 +15,7 @@ import ViewProducts from "./components/ProductList";
 import AddProducts from "./components/AddProduct";
 import UpdateProducts from "./components/UpdateProduct";
 import ViewCategories from "./components/CategoryList";
+import AddCategory from "./components/AddCategory";
 import UpdateCategories from "./components/UpdateCategory";
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
 				<Route path="/add/product" element={<AddProducts />} />
 				<Route path="/edit/product/:id" element={<UpdateProducts />} />
 				<Route path="/categories" element={<ViewCategories />} />
+				<Route path="/add/category" element={<AddCategory />} />
 				<Route path="/edit/category/:id" element={<UpdateCategories />} />
 				<Route element={<NoMatch />} />
 			</Routes>
