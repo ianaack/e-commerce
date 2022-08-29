@@ -1,15 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 function AddProducts() {
 	const [name, setName] = useState("");
 	const [price, setPrice] = useState("");
 	const [stock, setStock] = useState("");
-	const [category, setCategory] = useState([""]);
+	const [category, setCategory] = useState(0);
+	const [categories, setCategories] = useState([]);
+
+	useEffect(() => {
+		getCategories();
+	}, []);
+
+	const getCategories = async () => {
+		const response = await axios.get("/api/categories");
+		setCategories(response.data);
+	};
 
 	const saveProduct = async (e) => {
 		e.preventDefault();
-		await axios.post("http://localhost:3001/api/products", {
+		await axios.post("/api/products", {
 			product_name: name,
 			price: price,
 			stock: stock,
@@ -53,9 +63,15 @@ function AddProducts() {
 					<select
 						className="form-select"
 						onChange={(e) => setCategory(e.target.value)}
+						value={category}
 					>
-						<option defaultValue={""}>Open this select menu</option>
+						<option defaultValue={""}>Select an Option</option>
 						{/* TODO: Map over options here */}
+						{categories.map((category, i) => (
+							<option key={i} value={category.id}>
+								{category.id} - {category.category_name}
+							</option>
+						))}
 					</select>
 				</div>
 

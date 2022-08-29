@@ -12,7 +12,7 @@ function UpdateProducts() {
 
 	const updateProduct = async (e) => {
 		e.preventDefault();
-		await axios.put(`http://localhost:3001/api/products/${id}`, {
+		await axios.put(`/api/products/${id}`, {
 			product_name: name,
 			price: price,
 			stock: stock,
@@ -26,7 +26,7 @@ function UpdateProducts() {
 
 	const getProductById = async () => {
 		const response = await axios.get(
-			`http://localhost:3001/api/products/${id}`
+			`/api/products/${id}`
 		);
 		setName(response.data.product_name);
 		setPrice(response.data.price);

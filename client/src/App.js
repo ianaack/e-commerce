@@ -11,20 +11,26 @@ import Signup from "./pages/Signup";
 
 // import components
 import Nav from "./components/Navbar";
+import ViewProducts from "./components/ProductList";
 import AddProducts from "./components/AddProduct";
 import UpdateProducts from "./components/UpdateProduct";
+import ViewCategories from "./components/CategoryList";
+import UpdateCategories from "./components/UpdateCategory";
 
 function App() {
 	return (
 		<Router>
 			<Nav />
 			<Routes>
-				<Route path={"/"} element={<Home />} />
+				<Route path="/" element={<Home />} />
 				<Route path="/login" element={<Login />} />
 				<Route path="/signup" element={<Signup />} />
+				<Route path="/products" element={<ViewProducts />} />
 				<Route path="/products/:id" element={<Detail />} />
-				<Route path="/add" element={<AddProducts />} />
-				<Route path="/edit/:id" element={<UpdateProducts />} />
+				<Route path="/add/product" element={<AddProducts />} />
+				<Route path="/edit/product/:id" element={<UpdateProducts />} />
+				<Route path="/categories" element={<ViewCategories />} />
+				<Route path="/edit/category/:id" element={<UpdateCategories />} />
 				<Route element={<NoMatch />} />
 			</Routes>
 		</Router>

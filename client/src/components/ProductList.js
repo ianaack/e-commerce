@@ -10,18 +10,18 @@ const ViewProducts = () => {
 	}, []);
 
 	const getProducts = async () => {
-		const response = await axios.get("http://localhost:3001/api/products");
+		const response = await axios.get("/api/products");
 		setProduct(response.data);
 	};
 
 	const deleteProduct = async (id) => {
-		await axios.delete(`http://localhost:3001/api/products/${id}`);
+		await axios.delete(`/api/products/${id}`);
 		getProducts();
 	};
 
 	return (
-		<div>
-			<Link to="/add" className="btn btn-outline-dark my-3">
+		<div className="container my-2">
+			<Link to="/add/product" className="btn btn-outline-dark mx-3">
 				Add New Product
 			</Link>
 			<table className="table table-striped">
@@ -44,7 +44,7 @@ const ViewProducts = () => {
 							<td>{product.category_id}</td>
 							<td>
 								<Link
-									to={`/edit/${product.id}`}
+									to={`/edit/product/${product.id}`}
 									className="btn btn-outline-warning mx-2"
 								>
 									Edit
