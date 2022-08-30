@@ -19,12 +19,32 @@ function AddProducts() {
 
 	const saveProduct = async (e) => {
 		e.preventDefault();
-		await axios.post("/api/products", {
-			product_name: name,
-			price: price,
-			stock: stock,
-			category_id: category,
-		});
+		await axios
+			.post("/api/products", {
+				product_name: name,
+				price: price,
+				stock: stock,
+				category_id: category,
+			})
+			.then(window.location.replace("/products"))
+			.catch(function (error) {
+				if (error.response) {
+					// The request was made and the server responded with a status code
+					// that falls out of the range of 2xx
+					console.log(error.response.data);
+					console.log(error.response.status);
+					console.log(error.response.headers);
+				} else if (error.request) {
+					// The request was made but no response was received
+					// `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+					// http.ClientRequest in node.js
+					console.log(error.request);
+				} else {
+					// Something happened in setting up the request that triggered an Error
+					console.log("Error", error.message);
+				}
+				console.log(error.config);
+			});
 	};
 
 	return (
@@ -69,15 +89,13 @@ function AddProducts() {
 						{/* TODO: Map over options here */}
 						{categories.map((category, i) => (
 							<option key={i} value={category.id}>
-								{category.id} - {category.category_name}
+								{category.category_name}
 							</option>
 						))}
 					</select>
 				</div>
 
-				<button className="btn btn-outline-success m-2">
-					Add Product
-				</button>
+				<button className="btn btn-outline-success m-2">Add Product</button>
 			</form>
 		</div>
 	);

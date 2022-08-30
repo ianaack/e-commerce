@@ -88,7 +88,7 @@ router.post("/", (req, res) => {
 	Product.create(req.body, { Product })
 		.then((product) => {
 			res.status(200).json(product);
-      window.location.replace("/products");
+			window.location.replace("/products");
 		})
 		.catch((error) => {
 			if (error.response) {
@@ -154,7 +154,7 @@ router.delete("/:id", (req, res) => {
 				res.status(404).json({ message: "No Product found with this id" });
 				return;
 			}
-			res.json(dbProductData, { message: "Product Deleted" });
+			res.json(dbProductData);
 		})
 		.catch((error) => {
 			if (error.response) {
